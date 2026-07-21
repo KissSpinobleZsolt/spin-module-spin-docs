@@ -5,13 +5,15 @@ import { DIAGRAMS as FE_DIAGRAMS } from './data/frontendDiagrams'; // frontend d
 import { ApiSection } from './sections/api/ApiSection'; // full API reference
 import { DeploySection } from './sections/deploy/DeploySection'; // deployment guide (Docker + K8s)
 import { UISection } from './sections/ui/UISection'; // UI component catalogue
+import { ChangelogSection } from './sections/changelog/ChangelogSection'; // platform changelog
 
 // Top-level navigation sections
 const SECTIONS = [
-  { id: 'diagrams', label: '📐 Architecture Diagrams' },
-  { id: 'api',      label: '⚡ API Reference' },
-  { id: 'ui',       label: '🧩 UI Components' },
-  { id: 'deploy',   label: '🚀 Deployment' },
+  { id: 'diagrams',  label: '📐 Architecture Diagrams' },
+  { id: 'api',       label: '⚡ API Reference' },
+  { id: 'ui',        label: '🧩 UI Components' },
+  { id: 'deploy',    label: '🚀 Deployment' },
+  { id: 'changelog', label: '📋 Changelog' },
 ];
 
 // Diagram sub-tabs (Backend / Frontend)
@@ -66,9 +68,10 @@ export default function App() {
             selectedDiag={selectedDiag}
           />
         )}
-        {section === 'api'    && <ApiSection />}
-        {section === 'ui'     && <UISection />}
-        {section === 'deploy' && <DeploySection />}
+        {section === 'api'       && <ApiSection />}
+        {section === 'ui'        && <UISection />}
+        {section === 'deploy'    && <DeploySection />}
+        {section === 'changelog' && <ChangelogSection />}
       </main>
     </div>
   );

@@ -122,4 +122,31 @@ export const GROUPS = [
       { method: '*', path: '/api/plugin/{scope}/{path}', auth: 'Bearer', description: 'Proxy any HTTP method to {backend_url}/{path} of the named module.' },
     ],
   },
+  {
+    id: 'pages',
+    title: 'Pages',
+    note: 'Federation pages (route starts with "modules/") are resolved from the modules table, not page_registry — every registered module is automatically addressable.',
+    endpoints: [
+      { method: 'GET',   path: '/api/pages',        auth: 'Admin',  description: 'List all page_registry entries ordered by route.' },
+      { method: 'GET',   path: '/api/pages/config',  auth: 'Bearer', description: 'Return page config for a given ?route=. Federation routes (modules/{id}) synthesise a PageConfig from the modules table.' },
+      { method: 'PATCH', path: '/api/pages/config',  auth: 'Admin',  description: 'Update mutable page fields (title, roles, skeleton, enabled) for a native page. Body: partial PageConfigPatch.' },
+    ],
+  },
+  {
+    id: 'bot-logs',
+    title: 'Bot Logs',
+    note: 'Log tables (module_chatbot_logs) are keyed by bot name. All endpoints accept from and to as ISO datetime query params.',
+    endpoints: [
+      { method: 'GET', path: '/api/bot-logs/{bot_id}',         auth: 'Admin', description: 'Raw event log entries for a bot. Params: limit, offset, event_type, from, to. Returns { items, total }.' },
+      { method: 'GET', path: '/api/bot-logs/{bot_id}/summary', auth: 'Admin', description: 'Hourly aggregated event summaries for a bot. Params: from, to, event_type, limit, offset. Returns { items, total }.' },
+    ],
+  },
+  {
+    id: 'notifications',
+    title: 'Notifications',
+    note: 'Authentication is via ?token=<jwt> query parameter (not Authorization header) because the WebSocket upgrade step happens before headers can be read.',
+    endpoints: [
+      { method: 'WS', path: '/api/notifications/ws?token={jwt}', auth: 'Bearer', description: 'Stream new notifications to the client. Polls ClickHouse every 5 s and pushes rows newer than the connection timestamp as a JSON array.' },
+    ],
+  },
 ]

@@ -9,7 +9,7 @@ export const DIAGRAMS = [
 
     subgraph FastAPI["FastAPI Backend (port 8000)"]
         MW["Middleware\\nCORS + HTTP Logger"]
-        Routers["16 Routers"]
+        Routers["15 Routers"]
         Deps["Dependencies\\ntoken_dep / admin_dep"]
         BG["Background Tasks\\n3 asyncio tasks"]
     end
