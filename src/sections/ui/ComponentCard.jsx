@@ -26,7 +26,7 @@ export function ComponentCard({ doc }) {
         <code style={s.importSnippet}>
           {'import { '}
           <span style={{ color: '#60a5fa' }}>{doc.export}</span>
-          {" } from '../../"}
+          {" } from '/@"}
           <span style={{ color: '#4ade80' }}>{doc.file.replace('.tsx', '')}</span>
           {"'"}
         </code>
