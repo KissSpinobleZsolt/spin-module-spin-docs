@@ -1,6 +1,16 @@
 // Changelog entries — newest first. Each entry maps to one platform release.
 export const CHANGELOG_ENTRIES = [
   {
+    version: '0.11',
+    date: '2026-07-22',
+    label: 'Plugin bot-config API + MF loader fix',
+    changes: [
+      { type: 'feat', text: 'Added GET/PUT /bots/{bot_uuid}/config endpoints to anomascan-backend and cloud-insight-ai-backend — implements the standard plugin backend bot-config contract expected by BotConfigPage. Configs persist in /app/data/bot_configs.json on a named Docker volume.' },
+      { type: 'feat', text: 'Added named Docker volumes (anomascan_bot_configs, cloud_insight_ai_bot_configs) so bot configs survive container restarts.' },
+      { type: 'fix',  text: 'Fixed Module Federation loader race condition under React StrictMode: replaced the Set<scope> + per-call new Promise() approach with a Map<url, Promise> that shares the in-flight promise across concurrent callers, preventing the second StrictMode double-invocation from resolving against a script tag that had not yet executed.' },
+    ],
+  },
+  {
     version: '0.10',
     date: '2026-07-21',
     label: 'Module K8s deploy + submodule extraction',

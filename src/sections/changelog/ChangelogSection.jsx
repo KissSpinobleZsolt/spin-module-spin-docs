@@ -67,7 +67,7 @@ const s = {
     flex: 1,
     overflowY: 'auto',
     padding: '32px 40px',
-    maxWidth: '860px',
+    // maxWidth: '860px',
   },
   heading: {
     marginBottom: '24px',
