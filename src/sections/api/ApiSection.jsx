@@ -2,7 +2,18 @@ import { useState } from 'react';
 import { GROUPS } from './GROUPS'; // all API endpoint groups
 import { GroupCard } from './GroupCard'; // card for one group
 
-// Full API reference with left sidebar nav and search filtering.
+// Sidebar category order — groups without a matching category are appended at the end.
+const CATEGORY_ORDER = ['Core', 'Bots & Chat', 'Modules', 'LLM'];
+
+// Build ordered list of { label, groups } for the sidebar.
+const SIDEBAR_CATEGORIES = CATEGORY_ORDER.map(label => ({
+  label,
+  groups: GROUPS.filter(g => g.category === label),
+})).filter(c => c.groups.length > 0);
+
+const TOTAL_ENDPOINTS = GROUPS.reduce((sum, g) => sum + g.endpoints.length, 0); // total endpoint count for the subtitle
+
+// Full API reference with left sidebar nav (grouped by category) and search filtering.
 export function ApiSection() {
   const [query, setQuery] = useState('');                    // controlled search input
   const [selected, setSelected] = useState(GROUPS[0]?.id);  // active group id
@@ -28,7 +39,7 @@ export function ApiSection() {
         <div>
           <h1 style={s.title}>⚡ API Reference</h1>
           <p style={s.subtitle}>
-            {GROUPS.length} groups · Base URL:{' '}
+            {TOTAL_ENDPOINTS} endpoints · {GROUPS.length} groups · Base URL:{' '}
             <code style={s.code}>http://localhost:8000</code>
             {' '}· Auth:{' '}
             <code style={s.code}>Authorization: Bearer &lt;jwt&gt;</code>
@@ -46,20 +57,24 @@ export function ApiSection() {
       <div style={s.body}>
         {!searching && ( // hide sidebar when a search query is active
           <nav style={s.sidebar}>
-            <p style={s.navLabel}>Groups</p>
-            <ul style={s.navList}>
-              {GROUPS.map(g => (
-                <li key={g.id}>
-                  <button
-                    onClick={() => setSelected(g.id)} // select this group; card updates instantly
-                    style={{ ...s.navLink, ...(selected === g.id ? s.navLinkActive : {}) }}
-                  >
-                    <span style={{ ...s.navDot, ...(selected === g.id ? s.navDotActive : {}) }} />
-                    {g.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {SIDEBAR_CATEGORIES.map(cat => (
+              <div key={cat.label} style={s.navCategory}>
+                <p style={s.navCategoryLabel}>{cat.label}</p>
+                <ul style={s.navList}>
+                  {cat.groups.map(g => (
+                    <li key={g.id}>
+                      <button
+                        onClick={() => setSelected(g.id)} // select this group; card updates instantly
+                        style={{ ...s.navLink, ...(selected === g.id ? s.navLinkActive : {}) }}
+                      >
+                        <span style={{ ...s.navDot, ...(selected === g.id ? s.navDotActive : {}) }} />
+                        {g.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </nav>
         )}
 
@@ -130,23 +145,32 @@ const s = {
   },
   sidebar: {
     alignSelf: 'flex-start',
+    display: 'flex',
+    flexDirection: 'column',
     flexShrink: 0,
+    gap: '16px',
+    overflowY: 'auto',
     position: 'sticky',
     top: 0,
-    width: '140px',
+    width: '148px',
   },
-  navLabel: {
-    color: '#64748b',        // slate-500
+  navCategory: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+  },
+  navCategoryLabel: {
+    color: '#475569',        // slate-600
     fontSize: '10px',
     fontWeight: 700,
     letterSpacing: '0.08em',
-    margin: '0 0 8px',
+    margin: '0 0 4px',
     textTransform: 'uppercase',
   },
   navList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2px',
+    gap: '1px',
     listStyle: 'none',
     margin: 0,
     padding: 0,
@@ -161,7 +185,7 @@ const s = {
     display: 'flex',
     fontSize: '12px',
     gap: '8px',
-    padding: '6px 8px',
+    padding: '5px 8px',
     textAlign: 'left',
     transition: 'all 0.15s',
     width: '100%',
