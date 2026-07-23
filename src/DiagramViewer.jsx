@@ -40,6 +40,8 @@ export function DiagramViewer({ code }) {
       .then(({ svg }) => {
         if (svgWrapRef.current) {
           svgWrapRef.current.innerHTML = svg; // inject rendered SVG
+          const el = svgWrapRef.current.querySelector('svg');
+          if (el) el.style.maxWidth = '300%'; // override mermaid's px max-width
           setReady(true);
         }
       })
