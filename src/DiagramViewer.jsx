@@ -41,7 +41,7 @@ export function DiagramViewer({ code }) {
         if (svgWrapRef.current) {
           svgWrapRef.current.innerHTML = svg; // inject rendered SVG
           const el = svgWrapRef.current.querySelector('svg');
-          if (el) el.style.maxWidth = '300%'; // override mermaid's px max-width
+          if (el) el.style.width = '300%'; // override mermaid's px max-width
           setReady(true);
         }
       })
